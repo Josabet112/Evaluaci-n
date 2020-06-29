@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Esta es una pagina web de muestra</title>
+
+</head>
+<style type="text/css">
+  .dropdownfiles {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+
+  #drop_zone {
+    border: 2px dashed #bbb;
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    color: #bbb;
+  }
+
+</style>
+<body>
+
+  <div id="main">
+    <p>Cargar archivo:
+      <input type="file" id="files" name="files[]" accept=".csv" multiple />
+    </p>
+
+    <script>
+      function handleFileSelect(evt) {
+        var files = evt.target.files; // FileList object
+
+        // files is a FileList of File objects. List some properties.
+        var output = [];
+        for (var i = 0, f; f = files[i]; i++) {
+
+          output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                      f.size, ' bytes, last modified: ',
+                      f.lastModifiedDate.toLocaleDateString(), '</li>');
+        }
+        document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+      }
+
+      document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    </script>
+
+  </div>
+
+  <br>
+
+  <div id="drop_zone" class="dropdownfiles">Arrastra el archivo aquí</div>
+  <output id="list"></output>
+  
+  <script>
+    function handleFileSelect(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+  
+      var files = evt.dataTransfer.files; 
+      var output = [];
+      for (var i = 0, f; f = files[i]; i++) {
+        output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                    f.size, ' bytes, last modified: ',
+                    f.lastModifiedDate.toLocaleDateString(), '</li>');
+      }
+      document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+    }
+  
+    function handleDragOver(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      evt.dataTransfer.dropEffect = 'copy'; 
+    }
+  
+    
+    var dropZone = document.getElementById('drop_zone');
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('drop', handleFileSelect, false);
+  </script>
+
+  </body>
+</html>
